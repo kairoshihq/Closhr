@@ -3,7 +3,7 @@
 > **Platform Crypto Analytics & AI Financial Intelligence**  
 > Real-time market data · Portfolio management · AI-powered insights · Price alerts
 
-[![CI Status](https://github.com/@kairoshihq/Closhr/actions/workflows/ci.yml/badge.svg)](https://github.com/@kairoshihq/Closhr/actions)
+[![CI Status](https://github.com/kairoshihq/Closhr/actions/workflows/ci.yml/badge.svg)](https://github.com/kairoshihq/Closhr/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python)](https://www.python.org/)
@@ -30,44 +30,42 @@
 
 ## Tentang Proyek
 
-**Kairoshi Finance** adalah platform web full-stack untuk analisis aset kripto yang dirancang untuk trader individu dan investor ritel. Platform ini menggabungkan data pasar real-time dari CoinGecko dan Binance, manajemen portofolio, sistem peringatan harga otomatis, dan asisten AI berbasis model bahasa besar (LLM) yang berjalan secara lokal via LM Studio — menjaga privasi data pengguna sepenuhnya.
-
-Nama **Kairoshi (カイロシ)** terinspirasi dari konsep Jepang *kairo* (回路 — sirkuit/jalur) dan filosofi *kairotic moment* (waktu yang tepat untuk bertindak), mencerminkan visi platform: memberikan informasi dan wawasan yang tepat, di waktu yang tepat.
+**Closhr** adalah platform web full-stack untuk analisis aset kripto yang dirancang untuk trader individu dan investor ritel. Platform ini menggabungkan data pasar real-time dari CoinGecko dan Binance, manajemen portofolio, sistem peringatan harga otomatis, dan asisten AI berbasis model bahasa besar (LLM) yang berjalan secara lokal via LM Studio — menjaga privasi data pengguna sepenuhnya.
 
 ---
 
 ## Fitur Utama
 
-### 📊 Market Dashboard
+### Market Dashboard
 - Harga real-time untuk ribuan aset kripto via CoinGecko API
 - Live price stream via Binance WebSocket (latency < 500ms)
 - Chart candlestick, area, dan sparkline interaktif
 - Trending coins, top gainers & losers, dan market dominance
 
-### 💼 Portfolio Management
+### Portfolio Management
 - Tambah, edit, dan hapus aset portofolio
 - Kalkulasi P/L (Profit/Loss) otomatis berdasarkan harga terkini
 - Alokasi chart pie/donut per aset
 - Riwayat transaksi dan rata-rata harga beli (DCA tracking)
 
-### 👀 Watchlist & Price Alerts
+### Watchlist & Price Alerts
 - Simpan koin favorit dalam watchlist personal
 - Buat price alert dengan kondisi: di atas atau di bawah threshold
 - Notifikasi alert via UI (WebSocket push)
 - Manajemen alert: aktifkan, nonaktifkan, hapus
 
-### 🤖 AI Financial Assistant
+### AI Financial Assistant
 - Chat dengan model LLM lokal via LM Studio (100% privat, tanpa API eksternal)
 - 4 mode analisis: Market Analyst, Portfolio Review, Coin Summary, Learning Assistant
 - Respons streaming real-time via Server-Sent Events
 - Riwayat chat tersimpan per akun
 
-### 📰 Crypto News Aggregator
+### Crypto News Aggregator
 - Agregasi berita kripto terbaru dari multiple sumber
 - Kategorisasi berita per koin/topik
 - Deduplikasi dan normalisasi format
 
-### 🔐 Autentikasi & Keamanan
+### Autentikasi & Keamanan
 - Auth.js (NextAuth) dengan strategi JWT
 - Route guard via Next.js middleware
 - Password hashing dengan bcrypt
@@ -399,7 +397,3 @@ Pastikan:
 Didistribusikan di bawah lisensi MIT. Lihat [`LICENSE`](LICENSE) untuk detail.
 
 ---
-
-<div align="center">
-  <sub>Built with ❤️ — Kairoshi Finance Team</sub>
-</div>

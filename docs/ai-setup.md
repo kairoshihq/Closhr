@@ -26,7 +26,7 @@ Dokumen ini menjelaskan cara setup dan konfigurasi **LM Studio** sebagai AI engi
 
 ## 2. Download Model
 
-Kairoshi Finance dioptimalkan untuk model-model berikut (pilih satu):
+Closhr dioptimalkan untuk model-model berikut (pilih satu):
 
 | Model | VRAM / RAM | Kualitas | Use Case |
 |---|---|---|---|
