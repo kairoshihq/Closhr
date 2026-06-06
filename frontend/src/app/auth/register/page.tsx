@@ -76,7 +76,7 @@ export default function RegisterPage() {
             K
           </div>
           <h1 className="text-2xl font-bold text-[#e2e8f0]">Create Account</h1>
-          <p className="text-[13px] text-[#4a5568] mt-1">Join Kairoshi Finance today</p>
+          <p className="text-[13px] text-[#4a5568] mt-1">Join Closhr today</p>
         </div>
 
         {/* Form */}
