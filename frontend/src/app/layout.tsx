@@ -14,7 +14,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kairoshi Finance",
+  title: "Closhr",
   description: "AI-Powered Crypto Trading Dashboard",
 };
 

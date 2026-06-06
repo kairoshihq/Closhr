@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  portfolios   Portfolio[]
+  watchlists   Watchlist[]
+  alerts       Alert[]
+  aiChats      AIChat[]
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  assetSymbol String
+  quantity    Float
+  avgPrice    Float
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Watchlist {
+  id      String   @id @default(cuid())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id])
+  coinId  String
+  addedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  coinId    String
+  condition String
+  threshold Float
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model AIChat {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  messages  Json
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
