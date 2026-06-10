@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Loader2, Mail, Lock, User } from "lucide-react";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +16,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
@@ -41,23 +40,24 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await res.json().catch(() => null);
+      let data: { detail?: string } = {};
+      try {
+        data = await res.json();
+      } catch {}
 
       if (!res.ok) {
-        throw new Error(data?.detail ?? "Registration failed");
+        throw new Error(data?.detail ?? `Registration failed (${res.status})`);
       }
 
-      router.push("/auth/login?registered=1");
+      window.location.href = "/auth/login?registered=1";
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred");
-    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#0d0f14] flex items-center justify-center p-4">
-      {/* Background glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-[#7c3aed] opacity-5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/3 left-1/3 w-96 h-96 bg-[#00ffa3] opacity-5 rounded-full blur-[120px]" />
@@ -69,7 +69,6 @@ export default function RegisterPage() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-md"
       >
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-xl bg-[#7c3aed] flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
             K
@@ -78,7 +77,6 @@ export default function RegisterPage() {
           <p className="text-[13px] text-[#4a5568] mt-1">Join Closhr today</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <motion.div
