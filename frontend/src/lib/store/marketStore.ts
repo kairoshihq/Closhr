@@ -9,16 +9,16 @@ interface MarketState {
   trending: CoinPrice[];
   loading: boolean;
   error: string | null;
-
-  // Real-time price map from WebSocket (symbol -> price)
   livePrices: Record<string, number>;
   liveChanges: Record<string, number>;
+  _refreshTimer: ReturnType<typeof setInterval> | null;
 
-  // Actions
   fetchMarket: () => Promise<void>;
   fetchTrending: () => Promise<void>;
   updateLivePrice: (symbol: string, price: number, change: number) => void;
   getLivePrice: (symbol: string, fallback: number) => number;
+  startAutoRefresh: (intervalMs?: number) => void;
+  stopAutoRefresh: () => void;
 }
 
 export const useMarketStore = create<MarketState>((set, get) => ({
@@ -29,11 +29,14 @@ export const useMarketStore = create<MarketState>((set, get) => ({
   error: null,
   livePrices: {},
   liveChanges: {},
+  _refreshTimer: null,
 
   fetchMarket: async () => {
     set({ loading: true, error: null });
     try {
-      const res = await fetch(`${API_URL}/market`);
+      const res = await fetch(`${API_URL}/market`, {
+        signal: AbortSignal.timeout(10000),
+      });
       if (!res.ok) throw new Error(`Market API error: ${res.status}`);
       const data: CoinPrice[] = await res.json();
       set({
@@ -55,12 +58,15 @@ export const useMarketStore = create<MarketState>((set, get) => ({
 
   fetchTrending: async () => {
     try {
-      const res = await fetch(`${API_URL}/market/trending`);
+      if (typeof window === "undefined") return;
+      const res = await fetch(`${API_URL}/market/trending`, {
+        signal: AbortSignal.timeout(10000),
+      });
       if (!res.ok) throw new Error(`Trending API error: ${res.status}`);
       const data: CoinPrice[] = await res.json();
       set({ trending: data });
     } catch (err) {
-      console.error("Failed to fetch trending:", err);
+      console.warn("Trending fetch failed:", err);
     }
   },
 
@@ -73,5 +79,25 @@ export const useMarketStore = create<MarketState>((set, get) => ({
 
   getLivePrice: (symbol, fallback) => {
     return get().livePrices[symbol] ?? fallback;
+  },
+
+  // Mulai auto-refresh setiap 60 detik (sesuai cache backend)
+  startAutoRefresh: (intervalMs = 60000) => {
+    get().stopAutoRefresh(); // clear timer lama jika ada
+    get().fetchMarket();
+    get().fetchTrending();
+    const timer = setInterval(() => {
+      get().fetchMarket();
+      get().fetchTrending();
+    }, intervalMs);
+    set({ _refreshTimer: timer });
+  },
+
+  stopAutoRefresh: () => {
+    const timer = get()._refreshTimer;
+    if (timer) {
+      clearInterval(timer);
+      set({ _refreshTimer: null });
+    }
   },
 }));
