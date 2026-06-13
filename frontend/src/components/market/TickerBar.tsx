@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { TickerItem } from "@/types/market";
-import { MOCK_TICKERS } from "@/lib/mockData";
+import { useMarketStore } from "@/lib/store/marketStore";
+import { MOCK_TICKERS } from "@/types/mockdata";
 
 function TickerChip({ item }: { item: TickerItem }) {
   const positive = item.change >= 0;
@@ -20,7 +19,10 @@ function TickerChip({ item }: { item: TickerItem }) {
 }
 
 export default function TickerBar() {
-  const items = [...MOCK_TICKERS, ...MOCK_TICKERS];
+  const tickers = useMarketStore((s) => s.tickers);
+  const data = tickers.length > 0 ? tickers : MOCK_TICKERS;
+  const items = [...data, ...data];
+
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -36,7 +38,8 @@ export default function TickerBar() {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [items.length]); // re-run saat data berubah
+
   return (
     <div className="border-b border-[#1e2130] bg-[#0b0d11] overflow-hidden">
       <div ref={ref} className="flex w-max">

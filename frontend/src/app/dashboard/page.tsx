@@ -8,10 +8,18 @@ import ExchangePanel from "@/components/portfolio/ExchangePanel";
 import PriceChart from "@/components/charts/PriceChart";
 import TopGainersLosers from "@/components/market/TopGainersLosers";
 import { usePriceSocket } from "@/lib/websocket/usePriceSocket";
+import { useMarketStore } from "@/lib/store/marketStore";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
   // Connect to WebSocket for live price updates
   usePriceSocket(["BTC", "ETH", "SOL", "SUI"]);
+
+  const { fetchMarket, fetchTrending } = useMarketStore();
+  useEffect(() => {
+    fetchMarket();
+    fetchTrending();
+  }, []);
 
   return (
     <div className="p-4 space-y-4">

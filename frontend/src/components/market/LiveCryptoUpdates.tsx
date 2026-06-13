@@ -1,20 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Clock, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import PriceCard from "@/components/market/PriceCard";
 import { useMarketStore } from "@/lib/store/marketStore";
 import { MOCK_PRICE_CARDS } from "@/types/mockdata";
 
+const FEATURED_SYMBOLS = ["BTC", "ETH", "SUI"];
+
 export default function LiveCryptoUpdates() {
+  const coins = useMarketStore((s) => s.coins);
   const livePrices = useMarketStore((s) => s.livePrices);
   const liveChanges = useMarketStore((s) => s.liveChanges);
 
-  // Merge live prices into cards
-  const cards = MOCK_PRICE_CARDS.map((card) => ({
+const baseCards = coins.length > 0
+    ? (FEATURED_SYMBOLS.map((sym) => {
+        const coin = coins.find((c) => c.symbol === sym);
+        if (!coin) return null;
+        return {
+          id: coin.id,
+          symbol: coin.symbol,
+          name: coin.name,
+          pair: `${coin.symbol}/USDT`,
+          price: coin.price,
+          change: coin.change1d,
+          sparkline: coin.sparkline,
+        };
+      }).filter((c): c is NonNullable<typeof c> => c !== null))
+    : MOCK_PRICE_CARDS;
+
+  const cards = baseCards.map((card) => ({
     ...card,
-    price: livePrices[card.symbol] ?? card.price,
-    change: liveChanges[card.symbol] ?? card.change,
+    price: livePrices[card!.symbol] ?? card!.price,
+    change: liveChanges[card!.symbol] ?? card!.change,
   }));
 
   return (
@@ -61,13 +79,13 @@ export default function LiveCryptoUpdates() {
       <div className="grid grid-cols-3 gap-3">
         {cards.map((card, i) => (
           <PriceCard
-            key={card.id}
-            symbol={card.symbol}
-            name={card.name}
-            pair={card.pair}
-            price={card.price}
-            change={card.change}
-            sparkline={card.sparkline}
+            key={card!.id}
+            symbol={card!.symbol}
+            name={card!.name}
+            pair={card!.pair}
+            price={card!.price}
+            change={card!.change}
+            sparkline={card!.sparkline}
             index={i}
           />
         ))}
